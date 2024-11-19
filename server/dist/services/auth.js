@@ -30,7 +30,7 @@ export const signToken = (user_id) => {
 /*
   Route middleware function that blocks an unauthenticated user from triggering a route and attaches the user_id to the req object
 */
-export const blockGuest = async (req, res, next) => {
+export const authenticate = async (req, res, next) => {
     // Get the user's id from the request cookie
     const user_id = getUserId(req);
     // If they don't have a cookie or valid JWT, they are not authorized

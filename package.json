@@ -21,6 +21,8 @@
     "wait-on": "^8.0.1"
   },
   "dependencies": {
-    "apollo-server-express": "^3.13.0"
+    "@apollo/client": "^3.11.10",
+    "apollo-server-express": "^3.13.0",
+    "graphql": "^16.9.0"
   }
 }

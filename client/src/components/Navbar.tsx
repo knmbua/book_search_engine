@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import AuthForm from './AuthForm';
 import { useStore } from '../store';
-import { logoutUser } from '../utils/API';
+import { LOGOUT_USER } from '../graphql/mutations';
 
 const AppNavbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
   const {state, setState} = useStore()!;
   const navigate = useNavigate();
+  const [logoutUser] = useMutation(LOGOUT_USER);
 
-  const handleLogout = async () => {
-    await logoutUser();
+  const handleLogout = async (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault();
+
+    // await logoutUser();
 
     setState((oldState) => ({
       ...oldState,

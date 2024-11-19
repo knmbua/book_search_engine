@@ -1,6 +1,5 @@
-const gql = String.raw
-
-const typeDefs = gql`
+const gql = String.raw;
+const typeDefs = gql `
   type Book {
     googleBookId: String
     authors: [String]
@@ -44,5 +43,4 @@ const typeDefs = gql`
     image: String!
   }
 `;
-
 export default typeDefs;

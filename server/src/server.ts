@@ -9,7 +9,14 @@ import db from './config/connection.js';
 import routes from './routes/index.js';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-import { typeDefs, resolvers } from './graphql/schema.js';
+import typeDefs from './schemas/typeDefs.js';
+import user_resolvers from './schemas/resolvers/user_resolvers.js';
+import auth_resolvers from './schemas/resolvers/auth_resolvers.js';
+
+const resolvers = {
+  ...user_resolvers,
+  ...auth_resolvers
+};
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -41,4 +48,11 @@ const server = new ApolloServer({
 
 await server.start();
 
-app.use('/graphql', expressMiddleware(server));
+app.use('/graphql', 
+  expressMiddleware(server, {
+    context: async ({ req }) => {
+      const token = req.headers.authorization || '';
+      return { req, token };
+    },
+  })
+);
