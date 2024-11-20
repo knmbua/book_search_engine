@@ -15,7 +15,7 @@ const initialFormData = {
   errorMessage: ''
 };
 
-// biome-ignore lint/correctness/noEmptyPattern: <explanation>
+
 const AuthForm = ({ isLogin, handleModalClose }: { handleModalClose: () => void; isLogin: boolean;}) => {
   const [formData, setFormData] = useState(initialFormData);
   const [showAlert, setShowAlert] = useState(false);
@@ -36,9 +36,9 @@ const AuthForm = ({ isLogin, handleModalClose }: { handleModalClose: () => void;
 
     try {
       const authFunction = isLogin ? loginUser : registerUser;
-
+      const { errorMessage, ...variables } = formData;
       const { data } = await authFunction({
-        variables: { ...formData }
+        variables: { ...variables }
       });
       setState((oldState) => ({
         ...oldState,
@@ -52,7 +52,7 @@ const AuthForm = ({ isLogin, handleModalClose }: { handleModalClose: () => void;
     } catch (err: any) {
       setFormData({
         ...formData,
-        errorMessage: err.response.data.message
+        errorMessage: err.message
       });
 
       setShowAlert(true);

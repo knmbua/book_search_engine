@@ -21,6 +21,7 @@ const typeDefs = gql `
   type Response {
     user: User
     message: String
+    errors: [String]
   }
 
   type Query {
@@ -29,12 +30,12 @@ const typeDefs = gql `
   }
 
   type Mutation {
-    registerUser(username: String!, email: String!, password: String!): Response
-    loginUser(email: String!, password: String!): Response
-    logoutUser: Response
-    saveBook(googleBookId: String!, authors: [String]!, title: String!, description: String!, image: String!): Response
-    deleteBook(googleBookId: String!): Response
-  }
+        registerUser(username: String!, email: String!, password: String!): Response
+        loginUser(email: String!, password: String!): Response
+        logoutUser: Response
+        saveBook(book: BookInput!): Response
+        deleteBook(googleBookId: String!): Response
+    }
 
   input BookInput {
     googleBookId: String!
