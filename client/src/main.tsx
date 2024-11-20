@@ -7,13 +7,27 @@ import SearchBooks from './pages/SearchBooks.js'
 import SavedBooks from './pages/SavedBooks.js'
 import { StoreProvider } from './store/index.js'
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, from } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  }
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
+});
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql', 
-  cache: new InMemoryCache()
-})
+  link: from([errorLink, new HttpLink({ uri: '/graphql' })]),
+  uri: '/graphql',
+  cache: new InMemoryCache(),
+});
 
 const router = createBrowserRouter([
   {
@@ -43,12 +57,14 @@ const router = createBrowserRouter([
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
+  <ApolloProvider client={client}>
   <StoreProvider>
-      <ApolloProvider client={client}>
+      
     <RouterProvider router={router} future={{
       // Router optional flag to get rid of future update warnings
       v7_startTransition: true
     }} />
-      </ApolloProvider>
+     
   </StoreProvider>
+  </ApolloProvider>
 )

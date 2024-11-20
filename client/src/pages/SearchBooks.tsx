@@ -14,7 +14,7 @@ import { Book, GoogleAPIBook } from '../interfaces/index.d';
 import { useStore } from '../store';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_USER_BOOKS } from '../graphql/queries';
-import {SAVE_BOOK} from '..graphql/mutations';
+import {SAVE_BOOK} from '../graphql/mutations';
 import { searchGoogleBooks } from '../utils/API';
 
 const SearchBooks = () => {

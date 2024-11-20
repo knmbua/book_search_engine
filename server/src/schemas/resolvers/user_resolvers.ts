@@ -1,20 +1,18 @@
 import User from '../../models/User.js';
 import { getUserId } from '../../services/auth.js';
-import { getErrorMessage } from '../../helpers/index.js';
+import { getErrorMessage } from '../helpers/index.js';
 
 const user_resolvers = {
   Query: {
     getUserBooks: async (_: any, __: any, { req }: { req: any }) => {
       const user_id = getUserId(req);
 
-      // If the client didn't send a cookie, we just send back an empty array
       if (!user_id) {
         return [];
       }
 
       const user = await User.findById(user_id);
 
-      // Return just the user's books array, not the user object
       return user?.savedBooks;
     }
   },
@@ -26,8 +24,6 @@ const user_resolvers = {
           { $addToSet: { savedBooks: book } },
           { new: true, runValidators: true }
         );
-
-        // Return generic response - This is NOT used on the client-side, but we must return a response
         return {
           message: 'Book saved successfully!'
         };
@@ -52,7 +48,6 @@ const user_resolvers = {
         return { message: "Couldn't find user with this id!" };
       }
 
-      // Return generic response - This is NOT used on the client-side, but we must return a response
       return {
         message: 'Book deleted successfully!'
       };

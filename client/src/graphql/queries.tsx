@@ -1,13 +1,26 @@
 import { gql } from '@apollo/client';
 
 export const GET_USER = gql`
-query GetUser {
-
-}
-`
+    query getUser {
+        getUser {
+            user{
+            _id
+            username
+            email
+            password
+            }
+        }
+    }
+`;
 
 export const GET_USER_BOOKS = gql`
-query GetUserBooks {
-  
+    query getUserBooks {
+  getUserBooks {
+    googleBookId
+    authors
+    description
+    image
+    title
+  }
 }
 `;

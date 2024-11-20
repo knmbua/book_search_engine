@@ -13,10 +13,9 @@ const AppNavbar = () => {
   const navigate = useNavigate();
   const [logoutUser] = useMutation(LOGOUT_USER);
 
-  const handleLogout = async (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault();
+  const handleLogout = async () => {
+    await logoutUser();
 
-    // await logoutUser();
 
     setState((oldState) => ({
       ...oldState,

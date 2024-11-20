@@ -33,15 +33,12 @@ export const signToken = (user_id) => {
 export const authenticate = async (req, res, next) => {
     // Get the user's id from the request cookie
     const user_id = getUserId(req);
-    // If they don't have a cookie or valid JWT, they are not authorized
     if (!user_id) {
         res.status(401).json({
             message: 'You are not authorized to perform that action'
         });
         return;
     }
-    // Attach the user's id to the request 
-    req.user_id = user_id;
-    // Call the next route callback function
+    req.user = { user_id };
     next();
 };
