@@ -1,4 +1,5 @@
 export interface Book {
+  _id: string;
   googleBookId: string;
   title: string;
   authors: string[];
@@ -33,7 +34,7 @@ export interface GoogleAPIVolumeInfo {
 }
 
 export interface GoogleAPIBook {
-  id: string;
+  _id: string;
   volumeInfo: GoogleAPIVolumeInfo;
 }
 

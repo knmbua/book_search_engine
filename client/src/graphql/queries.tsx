@@ -15,12 +15,12 @@ export const GET_USER = gql`
 
 export const GET_USER_BOOKS = gql`
     query getUserBooks {
-  getUserBooks {
-    googleBookId
-    authors
-    description
-    image
-    title
-  }
+      getUserBooks {
+        googleBookId
+        authors
+        description
+        image
+        title
+      }
 }
 `;

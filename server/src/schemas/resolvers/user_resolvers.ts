@@ -1,12 +1,12 @@
+import {Request} from 'express';
 import User from '../../models/User.js';
-import { getUserId } from '../../services/auth.js';
 import { getErrorMessage } from '../helpers/index.js';
 
 const user_resolvers = {
   Query: {
-    getUserBooks: async (_: any, __: any, { req }: { req: any }) => {
-      const user_id = getUserId(req);
-
+    getUserBooks: async (_: any, __: any, { req }: { req: Request }) => {
+      const user_id = req.user_id;
+      
       if (!user_id) {
         return [];
       }
@@ -17,7 +17,7 @@ const user_resolvers = {
     }
   },
   Mutation: {
-    saveBook: async (_: any, { book }: { book: any }, { req }: { req: any }) => {
+    saveBook: async (_: any, { book }: { book: any }, { req }: { req: Request }) => {
       try {
         await User.findOneAndUpdate(
           { _id: req.user_id },

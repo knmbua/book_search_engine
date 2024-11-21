@@ -7,12 +7,8 @@ import db from './config/connection.js';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import typeDefs from './schemas/typeDefs.js';
-import user_resolvers from './schemas/resolvers/user_resolvers.js';
-import auth_resolvers from './schemas/resolvers/auth_resolvers.js';
-const resolvers = {
-    ...user_resolvers,
-    ...auth_resolvers,
-};
+import resolvers from './schemas/resolvers.js';
+import { authenticate } from './services/auth.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
@@ -32,7 +28,7 @@ if (process.env.PORT) {
 db.once('open', async () => {
     await server.start();
     app.use('/graphql', expressMiddleware(server, {
-        context: async ({ req }) => ({ req, token: req.headers.token }),
+        context: authenticate
     }));
     app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
 });

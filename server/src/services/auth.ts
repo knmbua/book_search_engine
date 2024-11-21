@@ -1,10 +1,5 @@
-import type { Request, Response, NextFunction } from 'express';
+import { Request, Response} from 'express';
 
-declare module 'express' {
-  export interface Request {
-    user?: { user_id: Types.ObjectId };
-  }
-}
 import {Types} from 'mongoose';
 import jwt from 'jsonwebtoken';
 
@@ -25,7 +20,7 @@ export const getUserId = (req: Request) => {
 
   try {
     const { user_id } = verify(token, process.env.JWT_SECRET!) as JwtPayload;
-
+ 
     return user_id;
 
   } catch (error: any) {
@@ -49,22 +44,14 @@ export const signToken = (user_id: Types.ObjectId) => {
 /* 
   Route middleware function that blocks an unauthenticated user from triggering a route and attaches the user_id to the req object
 */
-export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = async ({req, res}: {req:Request; res:Response}) => {
   // Get the user's id from the request cookie
   const user_id = getUserId(req);
 
 
-  if (!user_id) {
-    res.status(401).json({
-      message: 'You are not authorized to perform that action'
-    });
-    return;
+  if (user_id) {
+    (req as any).user_id = user_id;
   }
 
- 
-
-  req.user = { user_id };
-
-
-  next();
-};
+  return {req,res}
+}

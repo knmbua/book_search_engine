@@ -2,6 +2,7 @@ const gql = String.raw
 
 const typeDefs = gql`
   type Book {
+    _id: ID!
     googleBookId: String
     authors: [String]
     description: String
@@ -11,7 +12,7 @@ const typeDefs = gql`
   }
 
   type User {
-    _id: ID
+    _id: ID!
     username: String
     email: String
     password: String
@@ -39,6 +40,7 @@ const typeDefs = gql`
     }
 
   input BookInput {
+    _id:ID
     googleBookId: String!
     authors: [String]!
     title: String!

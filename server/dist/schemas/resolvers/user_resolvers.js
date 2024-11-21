@@ -1,10 +1,9 @@
 import User from '../../models/User.js';
-import { getUserId } from '../../services/auth.js';
 import { getErrorMessage } from '../helpers/index.js';
 const user_resolvers = {
     Query: {
         getUserBooks: async (_, __, { req }) => {
-            const user_id = getUserId(req);
+            const user_id = req.user_id;
             if (!user_id) {
                 return [];
             }

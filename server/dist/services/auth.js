@@ -30,15 +30,11 @@ export const signToken = (user_id) => {
 /*
   Route middleware function that blocks an unauthenticated user from triggering a route and attaches the user_id to the req object
 */
-export const authenticate = async (req, res, next) => {
+export const authenticate = async ({ req, res }) => {
     // Get the user's id from the request cookie
     const user_id = getUserId(req);
-    if (!user_id) {
-        res.status(401).json({
-            message: 'You are not authorized to perform that action'
-        });
-        return;
+    if (user_id) {
+        req.user_id = user_id;
     }
-    req.user = { user_id };
-    next();
+    return { req, res };
 };

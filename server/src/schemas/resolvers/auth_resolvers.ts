@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 
 
 import User from '../../models/User.js';
-import { signToken, getUserId } from '../../services/auth.js';
+import { signToken} from '../../services/auth.js';
 import { getErrorMessage } from '../helpers/index.js';
 import { GraphQLError } from 'graphql';
 
@@ -12,7 +12,7 @@ import { GraphQLError } from 'graphql';
 const auth_resolvers = {
   Query: {
     getUser: async (_: any, __: any, { req }: { req: Request }): Promise<{ user: any | null }> => {
-      const user_id = getUserId(req);
+      const user_id = req.user_id;
       if (!user_id) {
         return {
           user: null
@@ -31,7 +31,6 @@ const auth_resolvers = {
       };
     }
   },
-
   
   Mutation: {
     async registerUser(_: any, args: { username: string; email: string; password: string; }, context: any) {
@@ -55,7 +54,7 @@ const auth_resolvers = {
         throw new GraphQLError(errorMessage);
       }
     },
-    loginUser: async (_: any, { input }: { input: any }, { res }: { res: Response }) => {
+    loginUser: async (_: any, input : { email: string; password: string }, { res }: { res: Response }) => {
       const user = await User.findOne({ email: input.email });
       if (!user) {
         return { message: "No user found with that email address" };

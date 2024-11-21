@@ -36,13 +36,13 @@ const AuthForm = ({ isLogin, handleModalClose }: { handleModalClose: () => void;
 
     try {
       const authFunction = isLogin ? loginUser : registerUser;
-      const { errorMessage, ...variables } = formData;
+      const prop = isLogin? 'loginUser': 'registerUser';
       const { data } = await authFunction({
-        variables: { ...variables }
+        variables: formData
       });
       setState((oldState) => ({
         ...oldState,
-        user: data.user
+        user: data[prop].user
       }));
 
       setFormData({...initialFormData});

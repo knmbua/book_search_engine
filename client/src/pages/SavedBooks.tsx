@@ -21,10 +21,10 @@ const SavedBooks = () => {
   }, [data]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId: string) => {
+  const handleDeleteBook = async (book: string) => {
     try {
       await deleteBook({
-        variables: { bookId },
+        variables: { book },
         update: (cache) => {
           const existingBooks = cache.readQuery({ query: GET_USER_BOOKS });
           const newBooks = (existingBooks as { getUserBooks: Book[] }).getUserBooks.filter((book: Book) => book.googleBookId !== bookId);
