@@ -51,7 +51,7 @@ const SearchBooks = () => {
     try {
       const res = await searchGoogleBooks(searchInput);
 
-      const book = res.data.items.map((book: GoogleAPIBook) => ({
+      const bookData = res.data.items.map((book: GoogleAPIBook) => ({
         googleBookId: book.id,
         authors: book.volumeInfo.authors || ['No author to display'],
         title: book.volumeInfo.title,
@@ -59,7 +59,7 @@ const SearchBooks = () => {
         image: book.volumeInfo.imageLinks?.thumbnail || '',
       }));
 
-      setSearchedBooks(book);
+      setSearchedBooks(bookData);
       setSearchInput('');
     } catch (err) {
       console.error(err);

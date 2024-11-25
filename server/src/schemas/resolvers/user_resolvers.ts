@@ -1,6 +1,7 @@
 import {Request} from 'express';
 import User from '../../models/User.js';
 import { getErrorMessage } from '../helpers/index.js';
+import { GraphQLError } from 'graphql';
 
 const user_resolvers = {
   Query: {
@@ -17,7 +18,10 @@ const user_resolvers = {
     }
   },
   Mutation: {
-    saveBook: async (_: any, { book }: { book: any }, { req }: { req: Request }) => {
+    saveBook: async (_: any, { book }: { book: any }, { req }: { req: any }) => {
+      if (!req.user_id) {
+        throw new GraphQLError('You must be logged in to perform this action');
+      }
       try {
         await User.findOneAndUpdate(
           { _id: req.user_id },
@@ -32,9 +36,8 @@ const user_resolvers = {
 
         const errorMessage = getErrorMessage(error);
 
-        return {
-          message: errorMessage
-        };
+      
+        throw new GraphQLError(errorMessage);
       }
     },
     deleteBook: async (_: any, { bookId }: { bookId: string }, { req }: { req: any }) => {
@@ -45,7 +48,7 @@ const user_resolvers = {
       );
 
       if (!updatedUser) {
-        return { message: "Couldn't find user with this id!" };
+        throw new GraphQLError("Couldn't find user with this id!");
       }
 
       return {
